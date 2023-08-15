@@ -6,7 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Image,
+  ImageBackground,
 } from 'react-native';
+import MashButton from './CustomButton';
 
 const App = () => {
 
@@ -25,7 +28,7 @@ const App = () => {
   }
 
   return (
-    <View style={styles.body}>
+    <ImageBackground style={styles.body} source={{ uri: 'https://w7.pngwing.com/pngs/485/388/png-transparent-drawn-cartoon-of-a-wall-cartoon-one-side-wall-thumbnail.png' }}>
       <Text style={styles.text}>
         Please write your name:
       </Text>
@@ -34,22 +37,27 @@ const App = () => {
         placeholder='e.g. John'
         onChangeText={(value) => SetName(value)}
       />
-      <TouchableOpacity
-        onPress={onPressHandler}
-        style={styles.button}
-      >
-        <Text style={styles.text}>
-          {submitted ? 'Clear' : 'Submit'}
-        </Text>
-      </TouchableOpacity>
+      <MashButton
+        onPressFunction={onPressHandler}
+        title={submitted ? 'Clear' : 'Submit'}
+      />
       {submitted ?
-        <Text style={styles.text}>
-          You are registered as {name}
-        </Text>
+        <View style={styles.body}>
+          <Text style={styles.text}>
+            You are registered as {name}
+          </Text>
+          <Image
+            source={require('./assets/done.png')}
+            style={styles.image}
+          />
+        </View>
         :
-        null
+        <Image
+          source={{ uri: 'https://img.freepik.com/free-vector/oops-explosion-vector_53876-17099.jpg?w=826&t=st=1692079798~exp=1692080398~hmac=9fe46916f78d5c3ab10cefceed54b1e730c5a70c344261c9f9c952ec11822c23' }}
+          style={styles.image}
+        />
       }
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -63,6 +71,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 20,
     margin: 10,
+    textAlign: 'center'
   },
   input: {
     width: 200,
@@ -79,6 +88,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff03f',
     alignItems: 'center',
   },
+  image: {
+    width: 100,
+    height: 100,
+    margin: 10
+  }
 });
 
 export default App;
