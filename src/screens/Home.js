@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import CustomButton from '../utils/CustomButton';
 import { Text, View, StyleSheet } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
+import { useSelector, useDispatch } from 'react-redux';
+import { setName } from "../redux/actions";
 
 const db = SQLite.openDatabase(
     {
@@ -15,7 +17,10 @@ const db = SQLite.openDatabase(
 
 export function Home({ navigation }) {
 
-    const [name, setName] = useState('');
+    const { name } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
+
+    // const [name, setName] = useState('');
 
     useEffect(() => {
         getData();
@@ -34,8 +39,8 @@ export function Home({ navigation }) {
                     (tx, results) => {
                         var len = results.rows.length;
                         if (len > 0) {
-                            var userName = results.row.item(0).Name
-                            setName(userName)
+                            var userName = results.row.item(0).Name;
+                            dispatch(setName(userName));
                         }
                     }
             })
