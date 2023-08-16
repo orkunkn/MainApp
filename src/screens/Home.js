@@ -4,7 +4,8 @@ import CustomButton from '../utils/CustomButton';
 import { Text, View, StyleSheet } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import { setName } from "../redux/actions";
+import { setName, getCities } from "../redux/actions";
+import { FlatList } from 'react-native-gesture-handler';
 
 const db = SQLite.openDatabase(
     {
@@ -17,13 +18,14 @@ const db = SQLite.openDatabase(
 
 export function Home({ navigation }) {
 
-    const { name } = useSelector(state => state.userReducer);
+    const { name, cities } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
     // const [name, setName] = useState('');
 
     useEffect(() => {
         getData();
+        dispatch(getCities());
     }, []);
 
     const getData = () => {
@@ -70,9 +72,15 @@ export function Home({ navigation }) {
             <Text style={styles.text}>
                 Welcome {name} !
             </Text>
-            <CustomButton
-                title='Remove Name'
-                onPressFunction={removeData}
+            <FlatList
+                data={cities}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text style={styles.title}>{item.country}</Text>
+                        <Text style={styles.subtitle}>{item.city}</Text>
+                    </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
             />
         </View>
     )
@@ -88,5 +96,24 @@ const styles = StyleSheet.create({
         fontSize: 40,
         fontWeight: 'bold',
         margin: 10
+    },
+    item: {
+        backgroundColor: '#ffffff',
+        borderWidth: 2,
+        borderColor: '#cccccc',
+        borderRadius: 5,
+        margin: 7,
+        width: 350,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 30,
+        margin: 10,
+    },
+    subtitle: {
+        fontSize: 20,
+        margin: 10,
+        color: '#999999',
     }
 })
