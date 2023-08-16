@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 const MashButton = (props) => {
+
     return (
         <TouchableOpacity
             onPress={props.onPressFunction}
