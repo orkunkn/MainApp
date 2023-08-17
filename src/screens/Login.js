@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Alert, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import CustomButton from '../utils/CustomButton';
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import SQLite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName } from "../redux/actions";
+import PushNotification from "react-native-push-notification";
 
 const db = SQLite.openDatabase(
     {
@@ -24,6 +25,7 @@ export default function Login({ navigation }) {
     useEffect(() => {
         createTable();
         getData();
+        createChannels();
     }, []);
 
     const createTable = () => {
@@ -34,6 +36,14 @@ export default function Login({ navigation }) {
                 + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT);"
             )
         })
+    }
+
+    const createChannels = () => {
+        PushNotification.createChannel({
+            channelId: "test-channel",
+            channelName: "Test Channel"
+        }
+        )
     }
 
     const getData = () => {

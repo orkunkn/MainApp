@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import CustomButton from '../utils/CustomButton';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName, getCities } from "../redux/actions";
 import { FlatList } from 'react-native-gesture-handler';
+import PushNotification from "react-native-push-notification";
 
 const db = SQLite.openDatabase(
     {
@@ -51,20 +52,12 @@ export function Home({ navigation }) {
         }
     }
 
-    const removeData = async () => {
-        try {
-            //await AsyncStorage.removeItem('UserName');
-            db.transaction((tx) => {
-                tx.executeSql(
-                    "DELETE FROM Users",
-                    [],
-                    () => { navigation.navigate('Login') },
-                    error => { console.log(error) }
-                )
-            })
-        } catch (error) {
-            console.log(error)
-        }
+    const handleNotification = (item) => {
+        PushNotification.localNotification({
+            channelId: "test-channel",
+            title: "You clicked on " + item.country,
+            message: item.city
+        });
     }
 
     return (
@@ -75,10 +68,14 @@ export function Home({ navigation }) {
             <FlatList
                 data={cities}
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text style={styles.title}>{item.country}</Text>
-                        <Text style={styles.subtitle}>{item.city}</Text>
-                    </View>
+                    <TouchableOpacity
+                        onPress={() => { handleNotification(item) }}
+                    >
+                        <View style={styles.item}>
+                            <Text style={styles.title}>{item.country}</Text>
+                            <Text style={styles.subtitle}>{item.city}</Text>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
