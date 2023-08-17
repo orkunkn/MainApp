@@ -1,7 +1,7 @@
 export const SET_USER_NAME = 'SET_USER_NAME';
 export const GET_CITIES = "GET_CITIES";
 
-const API_URL = 'https://mocki.io/v1/396261e8-45a8-4487-a10f-72c69f46acd1';
+const API_URL = 'https://mocki.io/v1/63837729-841f-43a3-a186-921ffad3551f';
 
 export const getCities = () => {
     try {

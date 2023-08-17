@@ -69,7 +69,14 @@ export function Home({ navigation }) {
                 data={cities}
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        onPress={() => { handleNotification(item) }}
+                        onPress={() => {
+                            handleNotification(item);
+                            navigation.navigate('Map', {
+                                city: item.city,
+                                lat: item.lat,
+                                lng: item.lng
+                            });
+                        }}
                     >
                         <View style={styles.item}>
                             <Text style={styles.title}>{item.country}</Text>
